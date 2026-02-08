@@ -1,26 +1,75 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T09:13:11.660Z",
-  "summary": "The diff implements improved frontend error handling for lead submission (including normalized user messages, raw error details, and structured console logging), adds a lightweight backend connectivity check with a non-blocking warning banner, and introduces a new frontend actor/config module intended to support correct anonymous actor configuration. One unrelated utility change (URL secret parameter extraction) appears to be added outside the stated scope.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-08T09:23:18.615Z",
+  "summary": "REQ-17 (remove Login/Logout from header) and REQ-18 (update confirmation message) appear implemented in the shown code diffs. REQ-16 (replace the actual QR image file at the static asset path) is not evidenced in the diff summary, so it appears missing. The diff summary also indicates several additional, unrequested frontend changes (connectivity banner, error handling, theme/config/docs) via the modified frontend-file-summaries.txt and urlParams utilities.",
+  "missing_requirements": [
     {
-      "description": "Added/modified utility to extract “secret parameters” from the URL query string for admin token initialization.",
-      "reason": "BuildRequest is focused on fixing lead form submission errors, anonymous actor configuration, and adding a backend connectivity check. Secret/admin token URL parameter handling is not requested and appears to be a separate feature area.",
+      "id": "REQ-16",
+      "requirement": "Replace the payment QR image by updating the static asset file at `frontend/public/assets/generated/payment-qr.dim_512x512.png` while keeping the existing path `/assets/generated/payment-qr.dim_512x512.png`.",
+      "reason": "The diff summary does not show any change to `frontend/public/assets/generated/payment-qr.dim_512x512.png` (no asset file change is listed). Only code/text files are shown as modified.",
       "evidence": [
-        "frontend/src/utils/urlParams.ts"
+        "file-diff: Modified files list does not include `frontend/public/assets/generated/payment-qr.dim_512x512.png`"
       ]
     }
   ],
-  "confidence": 0.72,
+  "hallucinated_features": [
+    {
+      "description": "Added/changed admin-related URL parameter/session persistence utilities (e.g., secret token extraction and clearing from hash) not requested by the BuildRequest.",
+      "reason": "BuildRequest only asks to replace QR asset, remove Login/Logout UI, and update confirmation text; URL param persistence/cleanup is outside scope.",
+      "evidence": [
+        "frontend/src/utils/urlParams.ts",
+        "frontend-file-summaries.txt (entry for `frontend/src/utils/urlParams.ts` references secret/admin tokens)"
+      ]
+    },
+    {
+      "description": "Backend connectivity checking hook and a non-blocking warning banner UI when backend is unreachable.",
+      "reason": "Not requested in REQ-16/17/18 and not part of the stated goals.",
+      "evidence": [
+        "frontend-file-summaries.txt (entries for `frontend/src/hooks/useBackendConnectivity.ts` and `frontend/src/components/BackendConnectivityBanner.tsx`)"
+      ]
+    },
+    {
+      "description": "Enhanced LeadCaptureForm error handling with expandable technical details and extensive debugging/logging.",
+      "reason": "Not requested in REQ-16/17/18.",
+      "evidence": [
+        "frontend-file-summaries.txt (entry for `frontend/src/components/LeadCaptureForm.tsx`)"
+      ]
+    },
+    {
+      "description": "Payment configuration changes (UPI link updates and documentation/comments) beyond swapping the static QR asset.",
+      "reason": "REQ-16 explicitly says no code changes are required to reference a different QR path; updating payment configuration/link is outside the requested changes.",
+      "evidence": [
+        "frontend-file-summaries.txt (entry for `frontend/src/config/payment.ts`)"
+      ]
+    },
+    {
+      "description": "Global visual theme changes (index.css palette changes).",
+      "reason": "Not requested; only specific UI element removal and message text change were requested.",
+      "evidence": [
+        "frontend-file-summaries.txt (entry for `frontend/src/index.css`)"
+      ]
+    },
+    {
+      "description": "Large documentation update in `frontend/README.md` unrelated to the three requested UI changes.",
+      "reason": "Not requested in the BuildRequest.",
+      "evidence": [
+        "frontend-file-summaries.txt (entry for `frontend/README.md`)"
+      ]
+    },
+    {
+      "description": "New/changed actor/config/error utilities (actor creation config module, actor error normalization) beyond requested UI changes.",
+      "reason": "Not requested; BuildRequest explicitly lists backend/payment logic as non-goals and only asks for limited frontend UI/asset updates.",
+      "evidence": [
+        "frontend-file-summaries.txt (entries for `frontend/src/utils/actorError.ts`, `frontend/src/config/index.ts`, `frontend/src/hooks/useActor.ts`)"
+      ]
+    }
+  ],
+  "confidence": 0.63,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/BackendConnectivityBanner.tsx",
-    "frontend/src/components/LeadCaptureForm.tsx",
-    "frontend/src/config/index.ts",
-    "frontend/src/hooks/useBackendConnectivity.ts",
-    "frontend/src/utils/actorError.ts",
+    "frontend/src/App.tsx",
+    "frontend/src/components/PaymentConfirmation.tsx",
     "frontend/src/utils/urlParams.ts",
     "project_state.json"
   ]

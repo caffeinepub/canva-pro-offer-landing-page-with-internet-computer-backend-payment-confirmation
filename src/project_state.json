@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
+  "projectStateVersion": 9,
   "summary": "Landing page + Google Apps Script (Web App) and Google Sheets backend to collect leads and track payments for a Canva Pro subscription offer, including global urgency slot counter and post-submit payment flow.",
   "architectural_notes": [
     "Use Google Apps Script Web App serving HTML/JS frontend and interacting with Google Sheets for persistence (form submissions, payment confirmations, global slot counter).",
@@ -10,7 +10,8 @@
   "known_issues": [
     "User reports an unspecified error after deployment/build; error details not yet provided."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
+  "imageRequirements": "## Edit Images\n- Replace the QR image content with the uploaded QR (payment-qr.dim_512x512.png > payment-qr.dim_512x512.png)",
   "existing_features": [
     {
       "id": "feature-create-a-modern-mobile-friendly-landing-page-for-the-canva-pro-offer-that-displays-product-name-canva-pro-price-299-for-1-year-original-price-4000-shown-crossed-out-a-features-section-and-the-text-1-year-warranty",
@@ -115,6 +116,30 @@
         "REQ-15"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-replace-the-payment-qr-image-displayed-in-the-payment-section-with-the-user-provided-uploaded-qr-image-keeping-the-app-s-existing-static-asset-path-assets-generated-payment-qr-dim-512x512-png-i-e-update-the-file-at-frontend-public-assets-generated-payment-qr-dim-512x512-png",
+      "title": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-login-logout-icon-button-from-the-landing-page-header-ui-currently-rendered-in-frontend-src-app-tsx-so-it-is-not-visible-to-users",
+      "title": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-the-user-clicks-the-i-have-paid-button-and-the-app-transitions-to-the-confirmation-screen-display-this-exact-english-message-prominently-you-will-get-access-within-10-mins-after-checking-your-payment-details-update-the-existing-confirmation-copy-in-frontend-src-components-paymentconfirmation-tsx-accordingly",
+      "title": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -168,6 +193,18 @@
       "reqIds": [
         "REQ-11"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Remove the Login icon from the landing page UI.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "After the user clicks the “I Have Paid” button, show a confirmation message: “You will get access within 10 mins after checking your payment details”.",
+      "reqIds": [],
       "status": "pending"
     }
   ],

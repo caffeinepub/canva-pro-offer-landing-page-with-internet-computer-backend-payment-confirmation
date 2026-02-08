@@ -1,74 +1,87 @@
 {
   "kind": "build_request",
-  "title": "Fix lead form submission failing with generic error",
-  "priority": "high",
+  "title": "Replace payment QR, remove login icon/button, and update post-payment confirmation message",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-13",
-      "text": "Update the lead-capture submit flow to surface actionable error details instead of only showing the generic message “Failed to submit. Please try again.” When `actor.createSubmission(...)` throws, extract and display a short, user-readable error message (English) and also provide a collapsible “Details” section (or similar) that shows the raw error string for debugging during development.",
+      "id": "REQ-16",
+      "text": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-3"
+          "msg-latest"
         ],
         "quotes": [
-          "getting this error"
+          "i want this QR"
         ]
       },
       "acceptanceCriteria": [
-        "If submission fails, the UI shows a clear error message (English) plus an optional expandable section containing the raw error string.",
-        "Console logging includes the full error object/string and context that helps diagnose whether the failure is actor-creation, network/agent, or backend-trap related.",
-        "If submission succeeds, the app proceeds to the payment step as before (no regression)."
+        "The QR shown in the payment UI matches the uploaded QR image.",
+        "The QR image is loaded from `/assets/generated/payment-qr.dim_512x512.png` and no backend image serving is introduced.",
+        "No code changes are required to reference a different QR path (only the asset file is replaced)."
       ]
     },
     {
-      "id": "REQ-14",
-      "text": "Fix the underlying cause of form submission failure in the deployed build by ensuring the anonymous (not logged-in) actor can successfully call `createSubmission(name, email, whatsapp)` on the backend canister. Verify and correct the frontend actor configuration used for anonymous users (the `createActorWithConfig()` path imported from `frontend/src/config` and used by `frontend/src/hooks/useActor.ts`).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "recent-messages-3"
-        ],
-        "quotes": [
-          "getting this error"
-        ]
-      },
-      "acceptanceCriteria": [
-        "In a deployed environment, a logged-out visitor can submit the lead form successfully and receive a valid `submissionId`, transitioning to the payment section.",
-        "No Internet Identity login is required to submit the lead form.",
-        "If the backend rejects a call, the backend returns/traps with a meaningful reason that becomes visible via REQ-13’s error details."
-      ]
-    },
-    {
-      "id": "REQ-15",
-      "text": "Add a lightweight connectivity check that helps distinguish “backend unreachable / actor misconfigured” from “backend rejected the request”. On app load (or on form screen mount), perform a simple backend call (e.g., an existing query like `getRemainingUrgencySlots()`), and if it fails, show a non-blocking banner warning that the backend cannot be reached and the form submission may fail.",
+      "id": "REQ-17",
+      "text": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-3"
+          "msg-latest"
         ],
         "quotes": [
-          "getting this error"
+          "ALSO REMOVE LOGIN ICON"
         ]
       },
       "acceptanceCriteria": [
-        "When the backend is unreachable/misconfigured, the form screen shows a clear warning banner before the user submits.",
-        "When the backend is reachable, the warning banner is not shown.",
-        "This check does not block normal usage or require authentication."
+        "The header no longer renders the Login/Logout button and related icons (e.g., LogIn/LogOut).",
+        "The rest of the landing page layout remains intact and functional (offer details, urgency banner, form, payment flow)."
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "AFTER I PAID BUTTON IT WILL SHOW YOU WILL GET ACCESS WITHIN 10 MINS AFTER CHECKING YOUR PAYMENT DETAILS"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After a successful `markAsPaid` action, the confirmation screen displays the exact sentence: “You will get access within 10 mins after checking your payment details”.",
+        "The message is user-facing and clearly visible without needing to expand/click anything.",
+        "No other user-facing text contradicts the 10-minute access expectation."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in `backend/main.mo`; only add `backend/migration.mo` if state upgrade is required.",
-    "Do not edit files under `frontend/src/components/ui` or other immutable paths listed in SYSTEM_CONTEXT.",
-    "All user-facing text added/changed must be in English."
+    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, `frontend/src/components/ui`.",
+    "Keep the payment QR loaded as a static frontend asset; do not add backend image hosting."
   ],
   "nonGoals": [
-    "Adding new product features unrelated to fixing submission errors (e.g., changing offer details, adding new fields).",
-    "Introducing third-party logging/monitoring services."
+    "Changing backend payment/submission logic (`markAsPaid`, renewal date computation, urgency slots).",
+    "Adding new authentication methods or third-party login providers.",
+    "Implementing real payment verification; the confirmation remains based on the existing “I Have Paid” user action."
   ],
   "imageRequirements": {
     "required": [],
-    "edits": []
+    "edits": [
+      "Replace the QR image content with the uploaded QR (payment-qr.dim_512x512.png > payment-qr.dim_512x512.png)"
+    ]
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Use English for user-facing text"
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

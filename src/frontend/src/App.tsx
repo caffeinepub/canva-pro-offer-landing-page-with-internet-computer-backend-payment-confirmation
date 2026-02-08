@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useInternetIdentity } from './hooks/useInternetIdentity';
 import { Button } from '@/components/ui/button';
-import { LogIn, LogOut, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import OfferDetails from './components/OfferDetails';
 import LeadCaptureForm from './components/LeadCaptureForm';
 import PaymentSection from './components/PaymentSection';
@@ -12,13 +12,12 @@ import AdminSubmissionsView from './components/AdminSubmissionsView';
 type FlowStep = 'form' | 'payment' | 'confirmation';
 
 export default function App() {
-  const { identity, login, clear, loginStatus } = useInternetIdentity();
+  const { identity } = useInternetIdentity();
   const [currentStep, setCurrentStep] = useState<FlowStep>('form');
   const [submissionId, setSubmissionId] = useState<bigint | null>(null);
   const [showAdmin, setShowAdmin] = useState(false);
 
   const isAuthenticated = !!identity;
-  const isLoggingIn = loginStatus === 'logging-in';
 
   const handleFormSuccess = (id: bigint) => {
     setSubmissionId(id);
@@ -27,23 +26,6 @@ export default function App() {
 
   const handlePaymentSuccess = () => {
     setCurrentStep('confirmation');
-  };
-
-  const handleAuthToggle = async () => {
-    if (isAuthenticated) {
-      await clear();
-      setShowAdmin(false);
-    } else {
-      try {
-        await login();
-      } catch (error: any) {
-        console.error('Login error:', error);
-        if (error.message === 'User is already authenticated') {
-          await clear();
-          setTimeout(() => login(), 300);
-        }
-      }
-    }
   };
 
   if (showAdmin) {
@@ -77,40 +59,17 @@ export default function App() {
             </div>
             <span className="font-semibold text-lg">Canva Pro Offer</span>
           </div>
-          <div className="flex items-center gap-2">
-            {isAuthenticated && (
-              <Button
-                onClick={() => setShowAdmin(true)}
-                variant="ghost"
-                size="sm"
-                className="gap-2"
-              >
-                <Shield className="h-4 w-4" />
-                Admin
-              </Button>
-            )}
+          {isAuthenticated && (
             <Button
-              onClick={handleAuthToggle}
-              disabled={isLoggingIn}
-              variant={isAuthenticated ? 'outline' : 'default'}
+              onClick={() => setShowAdmin(true)}
+              variant="ghost"
               size="sm"
               className="gap-2"
             >
-              {isLoggingIn ? (
-                'Logging in...'
-              ) : isAuthenticated ? (
-                <>
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </>
-              ) : (
-                <>
-                  <LogIn className="h-4 w-4" />
-                  Login
-                </>
-              )}
+              <Shield className="h-4 w-4" />
+              Admin
             </Button>
-          </div>
+          )}
         </div>
       </header>
 

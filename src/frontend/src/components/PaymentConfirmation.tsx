@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, Mail, MessageCircle } from 'lucide-react';
+import { CheckCircle2, Clock } from 'lucide-react';
 
 export default function PaymentConfirmation() {
   return (
@@ -19,28 +19,25 @@ export default function PaymentConfirmation() {
           Thank you for your purchase! Your Canva Pro subscription is being processed.
         </p>
 
-        <div className="bg-muted/50 rounded-lg p-6 space-y-4">
-          <h3 className="font-semibold text-lg">What Happens Next?</h3>
-          <div className="space-y-3 text-sm text-left">
-            <div className="flex items-start gap-3">
-              <Mail className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p>
-                You'll receive your Canva Pro access details via email within 24 hours
-              </p>
-            </div>
-            <div className="flex items-start gap-3">
-              <MessageCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p>
-                We'll also send you a WhatsApp message with your subscription details
-              </p>
-            </div>
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p>
-                Your 1-year warranty starts from the date of activation
-              </p>
-            </div>
+        <div className="bg-amber-50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-900 rounded-lg p-6">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Clock className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+            <h3 className="font-semibold text-xl text-amber-900 dark:text-amber-100">
+              Access Timeline
+            </h3>
           </div>
+          <p className="text-lg font-medium text-amber-900 dark:text-amber-100">
+            You will get access within 10 mins after checking your payment details
+          </p>
+        </div>
+
+        <div className="bg-muted/50 rounded-lg p-6 space-y-3 text-sm text-left">
+          <h3 className="font-semibold text-base text-center">What to Expect</h3>
+          <ul className="space-y-2 list-disc list-inside text-muted-foreground">
+            <li>We'll verify your payment details</li>
+            <li>You'll receive your Canva Pro access via email and WhatsApp</li>
+            <li>Your 1-year warranty starts from the date of activation</li>
+          </ul>
         </div>
 
         <p className="text-sm text-muted-foreground">

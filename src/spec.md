@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Fix lead form submission for logged-out users and replace the generic submission failure message with actionable, user-readable error feedback plus debug details.
+**Goal:** Update the payment experience by swapping in the provided QR code, simplifying the header by removing the login/logout control, and showing a specific post-payment confirmation message.
 
 **Planned changes:**
-- Update the lead form submit error handling so that when `actor.createSubmission(...)` throws, the UI shows a short English error message and an optional expandable “Details” section that displays the raw error string.
-- Add improved console logging on submission failure, including the full error object/string and context to help distinguish actor-creation vs network/agent vs backend trap failures.
-- Fix the anonymous (not logged-in) actor configuration used by `createActorWithConfig()` / `useActor.ts` so logged-out visitors can successfully call `createSubmission(name, email, whatsapp)` in deployed builds and proceed to payment.
-- Add a lightweight, non-blocking connectivity check on app load (or form mount) using an existing backend query (e.g., `getRemainingUrgencySlots()`); if it fails, show a warning banner indicating the backend may be unreachable/misconfigured.
+- Replace the existing payment QR static asset at `/assets/generated/payment-qr.dim_512x512.png` with the uploaded QR image (no path or backend changes).
+- Remove the Login/Logout icon/button from the landing page header in `frontend/src/App.tsx` while keeping the rest of the page layout intact.
+- Update `frontend/src/components/PaymentConfirmation.tsx` to prominently display the exact confirmation message: “You will get access within 10 mins after checking your payment details” after the “I Have Paid” action.
 
-**User-visible outcome:** Logged-out visitors can submit the lead form and proceed to the payment step; if submission fails, they see a clear error message with optional expandable technical details, and the form screen can warn them early if the backend appears unreachable.
+**User-visible outcome:** Users see the new QR code in the payment section, no longer see a login/logout control in the header, and after clicking “I Have Paid” they see the specified 10-minute access confirmation message.

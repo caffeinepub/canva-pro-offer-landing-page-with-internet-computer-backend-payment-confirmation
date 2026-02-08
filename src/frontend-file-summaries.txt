@@ -1,9 +1,9 @@
 {
-  "frontend/src/App.tsx": "Main application component managing the flow between form submission, payment, and confirmation steps with header/footer and admin panel toggle.",
+  "frontend/src/App.tsx": "Main application component managing the flow between form submission, payment, and confirmation steps with header/footer and admin panel toggle; Login/Logout button removed from header, only admin access button shown when authenticated.",
   "frontend/src/components/OfferDetails.tsx": "Presentational component displaying Canva Pro offer details including pricing, discount badge, features list, and warranty information.",
   "frontend/src/components/LeadCaptureForm.tsx": "Lead capture form component with enhanced error handling showing clear user messages and expandable technical details, integrated backend connectivity warning banner, and comprehensive console logging for debugging submission failures.",
   "frontend/src/components/PaymentSection.tsx": "Post-submission component showing payment QR code, payment link, and \"I Have Paid\" button to mark submission as paid.",
-  "frontend/src/components/PaymentConfirmation.tsx": "Success confirmation screen displayed after payment is marked as paid with next steps information.",
+  "frontend/src/components/PaymentConfirmation.tsx": "Success confirmation screen displayed after payment is marked as paid, prominently showing \"You will get access within 10 mins after checking your payment details\" message with timeline emphasis.",
   "frontend/src/components/UrgencyBanner.tsx": "Real-time urgency banner displaying \"Only X slots left\" using global slot counter from backend.",
   "frontend/src/components/AdminSubmissionsView.tsx": "Admin-only table view displaying all submissions with payment status, dates, and customer information.",
   "frontend/src/hooks/useQueries.ts": "React Query hook for fetching all submissions from the backend with proper actor dependency handling.",

@@ -1,73 +1,52 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix anonymous lead submission failures and improve frontend diagnostics",
+  "title": "Update payment QR asset, remove header login control, and revise payment confirmation message",
   "requirements": [
     {
-      "id": "REQ-13",
-      "summary": "Improve lead form submit error handling to show actionable messages and expandable raw error details.",
+      "id": "REQ-16",
+      "summary": "Replace the payment QR image file used by the Payment Section while keeping the existing static asset path.",
       "acceptanceCriteria": [
-        "If submission fails, the UI shows a clear error message (English) plus an optional expandable section containing the raw error string.",
-        "Console logging includes the full error object/string and context that helps diagnose whether the failure is actor-creation, network/agent, or backend-trap related.",
-        "If submission succeeds, the app proceeds to the payment step as before (no regression)."
+        "The QR shown in the payment UI matches the uploaded QR image.",
+        "The QR image is loaded from `/assets/generated/payment-qr.dim_512x512.png` and no backend image serving is introduced.",
+        "No code changes are required to reference a different QR path (only the asset file is replaced)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/utils/actorError.ts",
+          "path": "frontend/public/assets/generated/payment-qr.dim_512x512.png",
           "operation": "create",
-          "description": "Add a small utility to normalize unknown thrown values into (1) a short user-readable English message and (2) a raw error string for debugging; include helpers to classify likely categories (actor creation/config vs network/agent vs backend trap) for richer console context."
-        },
-        {
-          "path": "frontend/src/components/LeadCaptureForm.tsx",
-          "operation": "modify",
-          "description": "Update submit flow to: capture full thrown error, log detailed context (including whether actor was null, and any derived classification), render a clear English error summary, and provide a collapsible “Details” section (e.g., native details/summary) showing the raw error string; ensure onSuccess/submissionId flow to payment remains unchanged."
+          "description": "Replace/update the static asset content with the user-provided uploaded QR image, keeping the same filename and path so existing UI references remain unchanged."
         }
       ]
     },
     {
-      "id": "REQ-14",
-      "summary": "Correct anonymous actor configuration so logged-out users can call createSubmission successfully in deployed builds.",
+      "id": "REQ-17",
+      "summary": "Remove the Login/Logout icon/button from the landing page header UI rendered in App.tsx.",
       "acceptanceCriteria": [
-        "In a deployed environment, a logged-out visitor can submit the lead form successfully and receive a valid `submissionId`, transitioning to the payment section.",
-        "No Internet Identity login is required to submit the lead form.",
-        "If the backend rejects a call, the backend returns/traps with a meaningful reason that becomes visible via REQ-13’s error details."
+        "The header no longer renders the Login/Logout button and related icons (e.g., LogIn/LogOut).",
+        "The rest of the landing page layout remains intact and functional (offer details, urgency banner, form, payment flow)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/config/index.ts",
-          "operation": "create",
-          "description": "Implement and export `createActorWithConfig()` and `loadConfig()` used by the app; ensure anonymous actor creation is configured correctly for deployed environments (host/canister IDs/env config) without requiring Internet Identity, and include safe dev-only behavior for local environments (e.g., root key fetching) to prevent anonymous call failures."
-        },
-        {
-          "path": "frontend/src/hooks/useActor.ts",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Adjust the anonymous (logged-out) actor creation path to use the corrected `createActorWithConfig()` configuration; add targeted console logging around actor creation and initialization to help distinguish misconfiguration vs network vs backend rejection (without requiring authentication for form submission)."
+          "description": "Remove the Login/Logout button from the header and clean up related imports/state/handlers (e.g., LogIn/LogOut imports and handleAuthToggle) while preserving the rest of the landing page flow and layout."
         }
       ]
     },
     {
-      "id": "REQ-15",
-      "summary": "Add a non-blocking backend connectivity check and warning banner on the form screen.",
+      "id": "REQ-18",
+      "summary": "Update the post-payment confirmation screen copy to prominently show the exact 10-minute access message after a successful mark-as-paid transition.",
       "acceptanceCriteria": [
-        "When the backend is unreachable/misconfigured, the form screen shows a clear warning banner before the user submits.",
-        "When the backend is reachable, the warning banner is not shown.",
-        "This check does not block normal usage or require authentication."
+        "After a successful `markAsPaid` action, the confirmation screen displays the exact sentence: “You will get access within 10 mins after checking your payment details”.",
+        "The message is user-facing and clearly visible without needing to expand/click anything.",
+        "No other user-facing text contradicts the 10-minute access expectation."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useBackendConnectivity.ts",
-          "operation": "create",
-          "description": "Create a lightweight hook that attempts a simple backend call (use `getRemainingUrgencySlots()` via the existing actor) on mount, tracks reachability status, and never blocks the form; return state suitable for showing/hiding a warning banner."
-        },
-        {
-          "path": "frontend/src/components/BackendConnectivityBanner.tsx",
-          "operation": "create",
-          "description": "Add a small banner component (use existing shadcn-ui Alert components for consistent styling; verify the component's usage instructions before implementing) that shows a non-blocking English warning when the backend connectivity check fails."
-        },
-        {
-          "path": "frontend/src/components/LeadCaptureForm.tsx",
+          "path": "frontend/src/components/PaymentConfirmation.tsx",
           "operation": "modify",
-          "description": "Wire the connectivity hook/banner into the form screen so users see a warning before submitting when the backend is unreachable/misconfigured; ensure it does not block submission attempts and does not require authentication."
+          "description": "Update the confirmation copy so the exact sentence “You will get access within 10 mins after checking your payment details” is prominently displayed, and revise/remove any other visible text that implies longer timelines (e.g., 'within 24 hours') to avoid contradictions."
         }
       ]
     }

@@ -2,12 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-lead-capture-submit-flow-to-surface-actionable-error-details-instead-of-only-showing-the-generic-message-failed-to-submit-please-try-again-when-actor-createsubmission-throws-extract-and-display-a-short-user-readable-error-message-english-and-also-provide-a-collapsible-details-section-or-similar-that-shows-the-raw-error-string-for-debugging-during-development",
-      "featureTitle": "Update the lead-capture submit flow to surface actionable error details instead of only showing the generic message “Failed to submit. Please try again.” When `actor.createSubmission(...)` throws, extract and display a short, user-readable error message (English) and also provide a collapsible “Details” section (or similar) that shows the raw error string for debugging during development.",
-      "files": [
-        "frontend/src/components/LeadCaptureForm.tsx",
-        "frontend/src/utils/actorError.ts"
-      ],
+      "featureId": "feature-replace-the-payment-qr-image-displayed-in-the-payment-section-with-the-user-provided-uploaded-qr-image-keeping-the-app-s-existing-static-asset-path-assets-generated-payment-qr-dim-512x512-png-i-e-update-the-file-at-frontend-public-assets-generated-payment-qr-dim-512x512-png",
+      "featureTitle": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+      "files": [],
       "components": [
         "authorization@4.0.0",
         "core-infrastructure@1.0.2",
@@ -17,15 +14,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-13"
+        "REQ-16"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-fix-the-underlying-cause-of-form-submission-failure-in-the-deployed-build-by-ensuring-the-anonymous-not-logged-in-actor-can-successfully-call-createsubmission-name-email-whatsapp-on-the-backend-canister-verify-and-correct-the-frontend-actor-configuration-used-for-anonymous-users-the-createactorwithconfig-path-imported-from-frontend-src-config-and-used-by-frontend-src-hooks-useactor-ts",
-      "featureTitle": "Fix the underlying cause of form submission failure in the deployed build by ensuring the anonymous (not logged-in) actor can successfully call `createSubmission(name, email, whatsapp)` on the backend canister. Verify and correct the frontend actor configuration used for anonymous users (the `createActorWithConfig()` path imported from `frontend/src/config` and used by `frontend/src/hooks/useActor.ts`).",
+      "featureId": "feature-remove-the-login-logout-icon-button-from-the-landing-page-header-ui-currently-rendered-in-frontend-src-app-tsx-so-it-is-not-visible-to-users",
+      "featureTitle": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
       "files": [
-        "frontend/src/config/index.ts"
+        "frontend/src/App.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -36,17 +33,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-14"
+        "REQ-17"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-a-lightweight-connectivity-check-that-helps-distinguish-backend-unreachable-actor-misconfigured-from-backend-rejected-the-request-on-app-load-or-on-form-screen-mount-perform-a-simple-backend-call-e-g-an-existing-query-like-getremainingurgencyslots-and-if-it-fails-show-a-non-blocking-banner-warning-that-the-backend-cannot-be-reached-and-the-form-submission-may-fail",
-      "featureTitle": "Add a lightweight connectivity check that helps distinguish “backend unreachable / actor misconfigured” from “backend rejected the request”. On app load (or on form screen mount), perform a simple backend call (e.g., an existing query like `getRemainingUrgencySlots()`), and if it fails, show a non-blocking banner warning that the backend cannot be reached and the form submission may fail.",
+      "featureId": "feature-after-the-user-clicks-the-i-have-paid-button-and-the-app-transitions-to-the-confirmation-screen-display-this-exact-english-message-prominently-you-will-get-access-within-10-mins-after-checking-your-payment-details-update-the-existing-confirmation-copy-in-frontend-src-components-paymentconfirmation-tsx-accordingly",
+      "featureTitle": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
       "files": [
-        "frontend/src/components/BackendConnectivityBanner.tsx",
-        "frontend/src/components/LeadCaptureForm.tsx",
-        "frontend/src/hooks/useBackendConnectivity.ts"
+        "frontend/src/components/PaymentConfirmation.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -57,7 +52,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-15"
+        "REQ-18"
       ],
       "confidence": "high"
     }

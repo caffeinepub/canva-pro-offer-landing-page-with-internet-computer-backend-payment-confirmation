@@ -1,0 +1,27 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T09:13:11.660Z",
+  "summary": "The diff implements improved frontend error handling for lead submission (including normalized user messages, raw error details, and structured console logging), adds a lightweight backend connectivity check with a non-blocking warning banner, and introduces a new frontend actor/config module intended to support correct anonymous actor configuration. One unrelated utility change (URL secret parameter extraction) appears to be added outside the stated scope.",
+  "missing_requirements": [],
+  "hallucinated_features": [
+    {
+      "description": "Added/modified utility to extract “secret parameters” from the URL query string for admin token initialization.",
+      "reason": "BuildRequest is focused on fixing lead form submission errors, anonymous actor configuration, and adding a backend connectivity check. Secret/admin token URL parameter handling is not requested and appears to be a separate feature area.",
+      "evidence": [
+        "frontend/src/utils/urlParams.ts"
+      ]
+    }
+  ],
+  "confidence": 0.72,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/BackendConnectivityBanner.tsx",
+    "frontend/src/components/LeadCaptureForm.tsx",
+    "frontend/src/config/index.ts",
+    "frontend/src/hooks/useBackendConnectivity.ts",
+    "frontend/src/utils/actorError.ts",
+    "frontend/src/utils/urlParams.ts",
+    "project_state.json"
+  ]
+}

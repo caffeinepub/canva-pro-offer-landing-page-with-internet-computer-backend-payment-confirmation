@@ -1,0 +1,71 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T09:13:11.663Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 3,
+    "items": [
+      {
+        "id": "REQ-13",
+        "summary": "Update the lead-capture submit flow to surface actionable error details instead of only showing the generic message “Failed to submit. Please try again.” When `actor.createSubmission(...)` throws, extract and display a short, user-readable error message (English) and also provide a collapsible “Details” section (or similar) that shows the raw error string for debugging during development.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/utils/actorError.ts",
+          "frontend/src/components/LeadCaptureForm.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/actorError.ts",
+          "frontend/src/components/LeadCaptureForm.tsx"
+        ]
+      },
+      {
+        "id": "REQ-14",
+        "summary": "Fix the underlying cause of form submission failure in the deployed build by ensuring the anonymous (not logged-in) actor can successfully call `createSubmission(name, email, whatsapp)` on the backend canister. Verify and correct the frontend actor configuration used for anonymous users (the `createActorWithConfig()` path imported from `frontend/src/config` and used by `frontend/src/hooks/useActor.ts`).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/config/index.ts",
+          "frontend/src/hooks/useActor.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/config/index.ts"
+        ]
+      },
+      {
+        "id": "REQ-15",
+        "summary": "Add a lightweight connectivity check that helps distinguish “backend unreachable / actor misconfigured” from “backend rejected the request”. On app load (or on form screen mount), perform a simple backend call (e.g., an existing query like `getRemainingUrgencySlots()`), and if it fails, show a non-blocking banner warning that the backend cannot be reached and the form submission may fail.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useBackendConnectivity.ts",
+          "frontend/src/components/BackendConnectivityBanner.tsx",
+          "frontend/src/components/LeadCaptureForm.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useBackendConnectivity.ts",
+          "frontend/src/components/BackendConnectivityBanner.tsx",
+          "frontend/src/components/LeadCaptureForm.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/BackendConnectivityBanner.tsx",
+    "frontend/src/components/LeadCaptureForm.tsx",
+    "frontend/src/config/index.ts",
+    "frontend/src/hooks/useBackendConnectivity.ts",
+    "frontend/src/utils/actorError.ts",
+    "frontend/src/utils/urlParams.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

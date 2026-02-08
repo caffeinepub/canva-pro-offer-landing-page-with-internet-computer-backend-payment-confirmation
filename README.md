@@ -1,2 +1,3 @@
-# canva-pro-offer-landing-page-with-internet-computer-backend-payment-confirmation
-Exported from Caffeine project: Canva Pro offer landing page with Internet Computer backend, payment confirmation, and global urgency slots
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

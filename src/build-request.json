@@ -1,0 +1,74 @@
+{
+  "kind": "build_request",
+  "title": "Fix lead form submission failing with generic error",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-13",
+      "text": "Update the lead-capture submit flow to surface actionable error details instead of only showing the generic message “Failed to submit. Please try again.” When `actor.createSubmission(...)` throws, extract and display a short, user-readable error message (English) and also provide a collapsible “Details” section (or similar) that shows the raw error string for debugging during development.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-3"
+        ],
+        "quotes": [
+          "getting this error"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If submission fails, the UI shows a clear error message (English) plus an optional expandable section containing the raw error string.",
+        "Console logging includes the full error object/string and context that helps diagnose whether the failure is actor-creation, network/agent, or backend-trap related.",
+        "If submission succeeds, the app proceeds to the payment step as before (no regression)."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Fix the underlying cause of form submission failure in the deployed build by ensuring the anonymous (not logged-in) actor can successfully call `createSubmission(name, email, whatsapp)` on the backend canister. Verify and correct the frontend actor configuration used for anonymous users (the `createActorWithConfig()` path imported from `frontend/src/config` and used by `frontend/src/hooks/useActor.ts`).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "recent-messages-3"
+        ],
+        "quotes": [
+          "getting this error"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In a deployed environment, a logged-out visitor can submit the lead form successfully and receive a valid `submissionId`, transitioning to the payment section.",
+        "No Internet Identity login is required to submit the lead form.",
+        "If the backend rejects a call, the backend returns/traps with a meaningful reason that becomes visible via REQ-13’s error details."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Add a lightweight connectivity check that helps distinguish “backend unreachable / actor misconfigured” from “backend rejected the request”. On app load (or on form screen mount), perform a simple backend call (e.g., an existing query like `getRemainingUrgencySlots()`), and if it fails, show a non-blocking banner warning that the backend cannot be reached and the form submission may fail.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-3"
+        ],
+        "quotes": [
+          "getting this error"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the backend is unreachable/misconfigured, the form screen shows a clear warning banner before the user submits.",
+        "When the backend is reachable, the warning banner is not shown.",
+        "This check does not block normal usage or require authentication."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in `backend/main.mo`; only add `backend/migration.mo` if state upgrade is required.",
+    "Do not edit files under `frontend/src/components/ui` or other immutable paths listed in SYSTEM_CONTEXT.",
+    "All user-facing text added/changed must be in English."
+  ],
+  "nonGoals": [
+    "Adding new product features unrelated to fixing submission errors (e.g., changing offer details, adding new fields).",
+    "Introducing third-party logging/monitoring services."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

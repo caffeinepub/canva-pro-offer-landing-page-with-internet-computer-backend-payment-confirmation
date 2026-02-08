@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Landing page + Google Apps Script (Web App) and Google Sheets backend to collect leads and track payments for a Canva Pro subscription offer, including global urgency slot counter and post-submit payment flow.",
+  "architectural_notes": [
+    "Use Google Apps Script Web App serving HTML/JS frontend and interacting with Google Sheets for persistence (form submissions, payment confirmations, global slot counter).",
+    "Auto-create required Google Sheet structure/headers on first run/deploy.",
+    "Payment QR should be a static frontend asset provided by the user (use as-is). Payment Link should be configured from the user’s UPI ID (e.g., UPI deep link) as a frontend configuration value."
+  ],
+  "known_issues": [
+    "User reports an unspecified error after deployment/build; error details not yet provided."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-create-a-modern-mobile-friendly-landing-page-for-the-canva-pro-offer-that-displays-product-name-canva-pro-price-299-for-1-year-original-price-4000-shown-crossed-out-a-features-section-and-the-text-1-year-warranty",
+      "title": "Create a modern, mobile-friendly landing page for the Canva Pro offer that displays: product name “Canva Pro”, price “₹299 for 1 year”, original price “₹4000” shown crossed out, a features section, and the text “1 Year Warranty”.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-lead-capture-form-that-collects-name-email-and-whatsapp-validate-required-fields-client-side-on-submit-send-the-data-to-the-backend-and-create-a-new-submission-record-with-payment-status-pending",
+      "title": "Add a lead capture form that collects Name, Email, and WhatsApp; validate required fields client-side; on submit, send the data to the backend and create a new submission record with Payment Status = “Pending”.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-successful-form-submission-replace-the-form-ui-with-a-payment-section-that-shows-a-a-payment-qr-image-and-b-a-payment-link-clickable-and-includes-a-button-labeled-exactly-i-have-paid",
+      "title": "After successful form submission, replace the form UI with a payment section that shows (a) a payment QR image and (b) a payment link (clickable), and includes a button labeled exactly “I Have Paid”.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-i-have-paid-action-when-the-user-clicks-i-have-paid-call-the-backend-to-update-that-submission-s-payment-status-to-paid-and-store-payment-date-and-payment-time-compute-and-store-renewal-date-payment-date-365-days-then-show-a-confirmation-message-to-the-user",
+      "title": "Implement the “I Have Paid” action: when the user clicks “I Have Paid”, call the backend to update that submission’s Payment Status to “Paid” and store Payment Date and Payment Time; compute and store Renewal Date = Payment Date + 365 days; then show a confirmation message to the user.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-global-urgency-slot-logic-in-the-backend-with-a-single-global-counter-shared-by-all-users-total-slots-3-expose-an-api-to-fetch-current-remaining-slots-decrement-remaining-slots-by-1-each-time-any-user-successfully-completes-the-i-have-paid-action-when-remaining-slots-becomes-0-automatically-reset-back-to-3-never-display-offer-closed",
+      "title": "Implement global urgency slot logic in the backend with a single global counter shared by all users: total slots = 3; expose an API to fetch current remaining slots; decrement remaining slots by 1 each time any user successfully completes the “I Have Paid” action; when remaining slots becomes 0, automatically reset back to 3; never display “Offer Closed”.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-internal-admin-developer-way-to-view-submitted-records-from-the-frontend-for-verification-during-development-read-only-list-is-sufficient-without-requiring-third-party-authentication",
+      "title": "Add an internal (admin/developer) way to view submitted records from the frontend for verification during development (read-only list is sufficient), without requiring third-party authentication.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-visual-theme-across-the-landing-page-colors-typography-spacing-components-with-a-distinct-modern-style-suitable-for-a-subscription-offer-avoid-a-blue-purple-primary-palette",
+      "title": "Apply a cohesive visual theme across the landing page (colors, typography, spacing, components) with a distinct modern style suitable for a subscription offer; avoid a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-document-how-to-configure-the-payment-link-and-payment-qr-image-as-static-frontend-configuration-no-backend-image-serving-and-provide-clear-deployment-steps-for-the-internet-computer-app",
+      "title": "Document how to configure the payment link and payment QR image as static frontend configuration (no backend image serving), and provide clear deployment steps for the Internet Computer app.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-static-payment-link-configuration-so-the-payment-link-used-in-the-payment-section-is-based-on-the-user-provided-upi-id-replace-the-current-placeholder-yourpayment-upi-in-frontend-src-config-payment-ts",
+      "title": "Update the static payment link configuration so the payment link used in the Payment Section is based on the user-provided UPI ID (replace the current placeholder `yourpayment@upi` in `frontend/src/config/payment.ts`).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-documentation-to-clearly-explain-how-to-1-set-the-payment-link-to-the-user-s-upi-id-in-frontend-src-config-payment-ts-and-2-replace-the-qr-image-by-uploading-the-user-s-file-at-frontend-public-assets-generated-payment-qr-dim-512x512-png",
+      "title": "Update documentation to clearly explain how to (1) set the payment link to the user’s UPI ID in `frontend/src/config/payment.ts`, and (2) replace the QR image by uploading the user’s file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-lead-capture-submit-flow-to-surface-actionable-error-details-instead-of-only-showing-the-generic-message-failed-to-submit-please-try-again-when-actor-createsubmission-throws-extract-and-display-a-short-user-readable-error-message-english-and-also-provide-a-collapsible-details-section-or-similar-that-shows-the-raw-error-string-for-debugging-during-development",
+      "title": "Update the lead-capture submit flow to surface actionable error details instead of only showing the generic message “Failed to submit. Please try again.” When `actor.createSubmission(...)` throws, extract and display a short, user-readable error message (English) and also provide a collapsible “Details” section (or similar) that shows the raw error string for debugging during development.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-underlying-cause-of-form-submission-failure-in-the-deployed-build-by-ensuring-the-anonymous-not-logged-in-actor-can-successfully-call-createsubmission-name-email-whatsapp-on-the-backend-canister-verify-and-correct-the-frontend-actor-configuration-used-for-anonymous-users-the-createactorwithconfig-path-imported-from-frontend-src-config-and-used-by-frontend-src-hooks-useactor-ts",
+      "title": "Fix the underlying cause of form submission failure in the deployed build by ensuring the anonymous (not logged-in) actor can successfully call `createSubmission(name, email, whatsapp)` on the backend canister. Verify and correct the frontend actor configuration used for anonymous users (the `createActorWithConfig()` path imported from `frontend/src/config` and used by `frontend/src/hooks/useActor.ts`).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-lightweight-connectivity-check-that-helps-distinguish-backend-unreachable-actor-misconfigured-from-backend-rejected-the-request-on-app-load-or-on-form-screen-mount-perform-a-simple-backend-call-e-g-an-existing-query-like-getremainingurgencyslots-and-if-it-fails-show-a-non-blocking-banner-warning-that-the-backend-cannot-be-reached-and-the-form-submission-may-fail",
+      "title": "Add a lightweight connectivity check that helps distinguish “backend unreachable / actor misconfigured” from “backend rejected the request”. On app load (or on form screen mount), perform a simple backend call (e.g., an existing query like `getRemainingUrgencySlots()`), and if it fails, show a non-blocking banner warning that the backend cannot be reached and the form submission may fail.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create modern mobile-friendly landing page to sell Canva Pro ₹299/year (₹4000 crossed), include features + “1 Year Warranty”, and collect Name/Email/WhatsApp via form.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "After form submit, display Payment QR and Payment Link plus an “I Have Paid” button to confirm payment.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Google Apps Script + Sheets backend: auto-create Google Sheet and store Timestamp, Name, Email, WhatsApp, Payment Status, Payment Date, Payment Time, Plan, Renewal Date; set status Pending on submit; set status Paid + date/time on “I Have Paid”; compute Renewal Date = Payment Date + 365 days.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement GLOBAL urgency slot logic: total slots=3; display “Only X slots left”; decrement on each “I Have Paid”; when slots reach 0 auto-reset to 3; same count for all users; never show “Offer Closed”.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Provide complete working deliverables: Code.gs (Apps Script), index.html + CSS + JS, and deployment steps to publish as a Web App.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Create backend data storage and APIs equivalent to the requested Google Sheet schema, using the Internet Computer backend: store Timestamp, Name, Email, WhatsApp, Payment Status, Payment Date, Payment Time, Plan, Renewal Date for each submission; include a Plan field set to a sensible default representing “₹299 / 1 year Canva Pro” unless otherwise provided.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Use the user-provided UPI ID to set the Payment Link (UPI payment link/deep link) and use the user-provided QR image file as-is for the Payment QR (no modification).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Ensure the payment QR image displayed in the Payment Section is used exactly as provided by the user (no transformations other than responsive display) and is loaded from the existing static asset path `/assets/generated/payment-qr.dim_512x512.png`.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Canva Pro offer landing page with Internet Computer backend, payment confirmation, and global urgency slots",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

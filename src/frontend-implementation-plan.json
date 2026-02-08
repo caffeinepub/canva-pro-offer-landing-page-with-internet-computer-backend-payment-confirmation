@@ -1,0 +1,75 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix anonymous lead submission failures and improve frontend diagnostics",
+  "requirements": [
+    {
+      "id": "REQ-13",
+      "summary": "Improve lead form submit error handling to show actionable messages and expandable raw error details.",
+      "acceptanceCriteria": [
+        "If submission fails, the UI shows a clear error message (English) plus an optional expandable section containing the raw error string.",
+        "Console logging includes the full error object/string and context that helps diagnose whether the failure is actor-creation, network/agent, or backend-trap related.",
+        "If submission succeeds, the app proceeds to the payment step as before (no regression)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/actorError.ts",
+          "operation": "create",
+          "description": "Add a small utility to normalize unknown thrown values into (1) a short user-readable English message and (2) a raw error string for debugging; include helpers to classify likely categories (actor creation/config vs network/agent vs backend trap) for richer console context."
+        },
+        {
+          "path": "frontend/src/components/LeadCaptureForm.tsx",
+          "operation": "modify",
+          "description": "Update submit flow to: capture full thrown error, log detailed context (including whether actor was null, and any derived classification), render a clear English error summary, and provide a collapsible “Details” section (e.g., native details/summary) showing the raw error string; ensure onSuccess/submissionId flow to payment remains unchanged."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Correct anonymous actor configuration so logged-out users can call createSubmission successfully in deployed builds.",
+      "acceptanceCriteria": [
+        "In a deployed environment, a logged-out visitor can submit the lead form successfully and receive a valid `submissionId`, transitioning to the payment section.",
+        "No Internet Identity login is required to submit the lead form.",
+        "If the backend rejects a call, the backend returns/traps with a meaningful reason that becomes visible via REQ-13’s error details."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/config/index.ts",
+          "operation": "create",
+          "description": "Implement and export `createActorWithConfig()` and `loadConfig()` used by the app; ensure anonymous actor creation is configured correctly for deployed environments (host/canister IDs/env config) without requiring Internet Identity, and include safe dev-only behavior for local environments (e.g., root key fetching) to prevent anonymous call failures."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Adjust the anonymous (logged-out) actor creation path to use the corrected `createActorWithConfig()` configuration; add targeted console logging around actor creation and initialization to help distinguish misconfiguration vs network vs backend rejection (without requiring authentication for form submission)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Add a non-blocking backend connectivity check and warning banner on the form screen.",
+      "acceptanceCriteria": [
+        "When the backend is unreachable/misconfigured, the form screen shows a clear warning banner before the user submits.",
+        "When the backend is reachable, the warning banner is not shown.",
+        "This check does not block normal usage or require authentication."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useBackendConnectivity.ts",
+          "operation": "create",
+          "description": "Create a lightweight hook that attempts a simple backend call (use `getRemainingUrgencySlots()` via the existing actor) on mount, tracks reachability status, and never blocks the form; return state suitable for showing/hiding a warning banner."
+        },
+        {
+          "path": "frontend/src/components/BackendConnectivityBanner.tsx",
+          "operation": "create",
+          "description": "Add a small banner component (use existing shadcn-ui Alert components for consistent styling; verify the component's usage instructions before implementing) that shows a non-blocking English warning when the backend connectivity check fails."
+        },
+        {
+          "path": "frontend/src/components/LeadCaptureForm.tsx",
+          "operation": "modify",
+          "description": "Wire the connectivity hook/banner into the form screen so users see a warning before submitting when the backend is unreachable/misconfigured; ensure it does not block submission attempts and does not require authentication."
+        }
+      ]
+    }
+  ]
+}

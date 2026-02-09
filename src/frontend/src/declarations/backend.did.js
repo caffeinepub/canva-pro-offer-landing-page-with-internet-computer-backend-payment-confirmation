@@ -49,6 +49,7 @@ export const idlService = IDL.Service({
       [IDL.Opt(Submission)],
       ['query'],
     ),
+  'helloWorld' : IDL.Func([], [IDL.Text], ['query']),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'markAsPaid' : IDL.Func([SubmissionId], [], []),
 });
@@ -97,6 +98,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(Submission)],
         ['query'],
       ),
+    'helloWorld' : IDL.Func([], [IDL.Text], ['query']),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'markAsPaid' : IDL.Func([SubmissionId], [], []),
   });

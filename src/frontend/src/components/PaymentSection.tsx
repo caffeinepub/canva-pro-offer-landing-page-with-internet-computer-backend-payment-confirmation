@@ -4,7 +4,7 @@ import { useUrgencySlots } from '../hooks/useUrgencySlots';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ExternalLink, Loader2, CheckCircle2 } from 'lucide-react';
+import { ExternalLink, Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { PAYMENT_CONFIG } from '../config/payment';
 
 interface PaymentSectionProps {
@@ -17,6 +17,7 @@ export default function PaymentSection({ submissionId, onSuccess }: PaymentSecti
   const { refetch: refetchSlots } = useUrgencySlots();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [qrLoadError, setQrLoadError] = useState(false);
 
   const handleMarkAsPaid = async () => {
     if (!actor) {
@@ -58,16 +59,28 @@ export default function PaymentSection({ submissionId, onSuccess }: PaymentSecti
         </Alert>
 
         <div className="flex flex-col items-center space-y-4">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <img
-              src="/assets/generated/payment-qr.dim_512x512.png"
-              alt="Payment QR Code"
-              className="w-64 h-64 object-contain"
-            />
-          </div>
+          {!qrLoadError ? (
+            <div className="bg-white p-4 rounded-lg shadow-md">
+              <img
+                src="/assets/generated/payment-qr.dim_512x512.png"
+                alt="Payment QR Code"
+                className="w-64 h-64 object-contain"
+                onError={() => setQrLoadError(true)}
+              />
+            </div>
+          ) : (
+            <Alert variant="destructive" className="max-w-md">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                QR code failed to load. Please use the payment link below.
+              </AlertDescription>
+            </Alert>
+          )}
 
           <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">Or pay using this link:</p>
+            <p className="text-sm text-muted-foreground">
+              {qrLoadError ? 'Use this payment link:' : 'Or pay using this link:'}
+            </p>
             <a
               href={PAYMENT_CONFIG.paymentLink}
               target="_blank"

@@ -1,17 +1,22 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 9,
+  "projectStateVersion": 15,
   "summary": "Landing page + Google Apps Script (Web App) and Google Sheets backend to collect leads and track payments for a Canva Pro subscription offer, including global urgency slot counter and post-submit payment flow.",
   "architectural_notes": [
     "Use Google Apps Script Web App serving HTML/JS frontend and interacting with Google Sheets for persistence (form submissions, payment confirmations, global slot counter).",
     "Auto-create required Google Sheet structure/headers on first run/deploy.",
-    "Payment QR should be a static frontend asset provided by the user (use as-is). Payment Link should be configured from the user’s UPI ID (e.g., UPI deep link) as a frontend configuration value."
+    "Payment QR should be a static frontend asset provided by the user (use as-is). Payment Link should be configured from the user’s UPI ID (e.g., UPI deep link) as a frontend configuration value.",
+    "Production frontend must be configured with correct backend canister ID + host (e.g., via env.json / build-time env) so anonymous actor calls can reach the IC backend; otherwise connectivity check/banner will fail and submissions/admin list won’t load.",
+    "UPI ID provided by user: 9622655116@ybl (use to generate/configure the Payment Link deep link in frontend config).",
+    "User confirmation received to use the uploaded QR image as the app’s Payment QR at `/assets/generated/payment-qr.dim_512x512.png` and proceed with rebuild/redeploy (payment link to use UPI ID `9622655116@ybl`)."
   ],
   "known_issues": [
-    "User reports an unspecified error after deployment/build; error details not yet provided."
+    "User reports an unspecified error after deployment/build; error details not yet provided.",
+    "Live deployment error: frontend cannot reach backend canister (likely invalid/missing BACKEND_CANISTER_ID and/or HOST in env.json/build config), causing connectivity banner and form/admin API calls to fail.",
+    "Reported on live build: Payment QR code not showing in the payment section, and the Payment Link is not working/clickable."
   ],
-  "isFixRequest": false,
-  "imageRequirements": "## Edit Images\n- Replace the QR image content with the uploaded QR (payment-qr.dim_512x512.png > payment-qr.dim_512x512.png)",
+  "isFixRequest": true,
+  "imageRequirements": "## Edit Images\n- Replace the payment QR image with the uploaded PhonePe QR (image-5.png > payment-qr.dim_512x512.png)",
   "existing_features": [
     {
       "id": "feature-create-a-modern-mobile-friendly-landing-page-for-the-canva-pro-offer-that-displays-product-name-canva-pro-price-299-for-1-year-original-price-4000-shown-crossed-out-a-features-section-and-the-text-1-year-warranty",
@@ -140,6 +145,54 @@
         "REQ-18"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-fix-the-production-deployment-so-the-frontend-at-https-canva-pro-offer-landing-page-with-internet-compute-wft-caffeine-xyz-caffeineadmintoken-cd6971df037bc2a50e485b31ad3ab8b7c44ab3351a0f4cc9b88455f0bb0b4e33-can-successfully-reach-the-motoko-backend-canister-for-anonymous-users-lead-capture-urgency-slots-and-for-admin-users-view-submissions-by-ensuring-a-valid-runtime-configuration-is-available-to-the-frontend",
+      "title": "Fix the production deployment so the frontend at `https://canva-pro-offer-landing-page-with-internet-compute-wft.caffeine.xyz/#caffeineAdminToken=cd6971df037bc2a50e485b31ad3ab8b7c44ab3351a0f4cc9b88455f0bb0b4e33` can successfully reach the Motoko backend canister for anonymous users (lead capture + urgency slots) and for admin users (view submissions) by ensuring a valid runtime configuration is available to the frontend.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-production-build-serves-a-valid-env-json-configuration-file-that-contains-correct-values-for-backend-canister-id-and-dfx-network-set-to-ic-for-production-so-frontend-src-config-index-ts-can-reliably-configure-the-httpagent-and-actor-at-runtime",
+      "title": "Ensure the production build serves a valid `/env.json` configuration file that contains correct values for `BACKEND_CANISTER_ID` and `DFX_NETWORK` (set to `ic` for production) so `frontend/src/config/index.ts` can reliably configure the HttpAgent and actor at runtime.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-payment-deep-link-configuration-to-use-the-user-provided-upi-id-9622655116-ybl-so-the-payment-link-opens-the-correct-upi-payment-intent",
+      "title": "Update the payment deep link configuration to use the user-provided UPI ID `9622655116@ybl` so the Payment Link opens the correct UPI payment intent.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-payment-qr-code-image-is-present-at-the-exact-static-asset-path-assets-generated-payment-qr-dim-512x512-png-and-is-replaced-with-the-user-uploaded-qr-image-image-4-png-so-it-renders-in-the-payment-section",
+      "title": "Ensure the payment QR code image is present at the exact static asset path `/assets/generated/payment-qr.dim_512x512.png` and is replaced with the user-uploaded QR image (image-4.png), so it renders in the Payment Section.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-payment-section-resilient-when-the-qr-image-fails-to-load-by-showing-a-clear-english-fallback-message-and-ensuring-the-payment-link-remains-visible-and-usable",
+      "title": "Make the Payment Section resilient when the QR image fails to load by showing a clear English fallback message and ensuring the payment link remains visible and usable.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-app-s-static-qr-asset-with-the-user-uploaded-image-image-5-png-so-the-payment-section-successfully-loads-the-qr-from-the-existing-path-assets-generated-payment-qr-dim-512x512-png-file-location-frontend-public-assets-generated-payment-qr-dim-512x512-png",
+      "title": "Replace the app’s static QR asset with the user-uploaded image `image-5.png` so the Payment Section successfully loads the QR from the existing path `/assets/generated/payment-qr.dim_512x512.png` (file location: `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -205,6 +258,22 @@
       "id": "AR-16",
       "summary": "After the user clicks the “I Have Paid” button, show a confirmation message: “You will get access within 10 mins after checking your payment details”.",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Update developer documentation to explain how production runtime configuration works for this app, specifically that `frontend/src/config/index.ts` loads `/env.json` in production, and that a correct `BACKEND_CANISTER_ID` must be shipped with the deployed frontend for the site to function.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Update documentation to reflect the correct UPI ID and the exact QR asset replacement path, so future deployments keep both the payment link and QR code working.",
+      "reqIds": [
+        "REQ-25"
+      ],
       "status": "pending"
     }
   ],

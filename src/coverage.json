@@ -1,46 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T09:23:18.618Z",
+  "generatedAt": "2026-02-09T07:04:58.807Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-16",
-        "summary": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+        "id": "REQ-26",
+        "summary": "Replace the app’s static QR asset with the user-uploaded image `image-5.png` so the Payment Section successfully loads the QR from the existing path `/assets/generated/payment-qr.dim_512x512.png` (file location: `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
         "status": "implemented",
         "plannedFiles": [
           "frontend/public/assets/generated/payment-qr.dim_512x512.png"
         ],
         "matchedFiles": [
           "frontend/public/assets/generated/payment-qr.dim_512x512.png"
-        ]
-      },
-      {
-        "id": "REQ-17",
-        "summary": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-18",
-        "summary": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/PaymentConfirmation.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/PaymentConfirmation.tsx"
         ]
       }
     ]
@@ -48,12 +26,8 @@
   "changedFiles": [
     "build-request.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/public/assets/generated/payment-qr.dim_512x512.png",
-    "frontend/src/App.tsx",
-    "frontend/src/components/PaymentConfirmation.tsx",
-    "frontend/src/utils/urlParams.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

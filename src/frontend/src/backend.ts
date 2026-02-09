@@ -121,6 +121,7 @@ export interface backendInterface {
     getRemainingUrgencySlots(): Promise<bigint>;
     getStaticConfigInstructions(): Promise<string>;
     getSubmissionById(submissionId: SubmissionId): Promise<Submission | null>;
+    helloWorld(): Promise<string>;
     isCallerAdmin(): Promise<boolean>;
     markAsPaid(submissionId: SubmissionId): Promise<void>;
 }
@@ -237,6 +238,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getSubmissionById(arg0);
             return from_candid_opt_n11(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async helloWorld(): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.helloWorld();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.helloWorld();
+            return result;
         }
     }
     async isCallerAdmin(): Promise<boolean> {

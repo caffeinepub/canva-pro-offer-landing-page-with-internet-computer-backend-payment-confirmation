@@ -24,12 +24,28 @@ export async function loadConfig(): Promise<EnvConfig> {
     const response = await fetch('/env.json');
     if (response.ok) {
       const config = await response.json();
+      
+      // Validate required fields
+      if (!config.BACKEND_CANISTER_ID || config.BACKEND_CANISTER_ID.trim() === '') {
+        throw new Error('env.json is missing or has empty BACKEND_CANISTER_ID');
+      }
+      
+      if (!config.DFX_NETWORK || config.DFX_NETWORK.trim() === '') {
+        throw new Error('env.json is missing or has empty DFX_NETWORK');
+      }
+      
       envConfig = config;
-      console.log('✅ Loaded config from env.json:', envConfig);
+      console.log('✅ Loaded config from env.json:', {
+        canisterId: config.BACKEND_CANISTER_ID,
+        network: config.DFX_NETWORK,
+      });
       return config;
+    } else {
+      console.warn(`env.json returned status ${response.status}, falling back to environment variables`);
     }
   } catch (error) {
-    console.warn('Could not load env.json, falling back to environment variables');
+    console.warn('Could not load env.json:', error);
+    console.warn('Falling back to environment variables');
   }
 
   // Fallback to environment variables (development)
@@ -42,8 +58,17 @@ export async function loadConfig(): Promise<EnvConfig> {
     HOST: import.meta.env.VITE_HOST,
   };
 
+  if (!config.BACKEND_CANISTER_ID || config.BACKEND_CANISTER_ID.trim() === '') {
+    throw new Error(
+      'Backend canister ID not found. Please ensure BACKEND_CANISTER_ID is set in /env.json (production) or environment variables (development).'
+    );
+  }
+
   envConfig = config;
-  console.log('✅ Loaded config from environment variables:', envConfig);
+  console.log('✅ Loaded config from environment variables:', {
+    canisterId: config.BACKEND_CANISTER_ID,
+    network: config.DFX_NETWORK,
+  });
   return config;
 }
 
@@ -63,11 +88,11 @@ export async function createActorWithConfig(
 
   if (!config.BACKEND_CANISTER_ID) {
     throw new Error(
-      'Backend canister ID not found. Please ensure BACKEND_CANISTER_ID is set in env.json or environment variables.'
+      'Backend canister ID not found. Please ensure BACKEND_CANISTER_ID is set in /env.json or environment variables.'
     );
   }
 
-  // Determine host
+  // Determine host based on network
   const isLocal = config.DFX_NETWORK !== 'ic';
   const host =
     options?.agentOptions?.host ||

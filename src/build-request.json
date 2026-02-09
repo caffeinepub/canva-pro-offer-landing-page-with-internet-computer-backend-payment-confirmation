@@ -1,83 +1,47 @@
 {
   "kind": "build_request",
-  "title": "Replace payment QR, remove login icon/button, and update post-payment confirmation message",
-  "priority": "normal",
+  "title": "Replace missing payment QR with uploaded image-5.png and ensure it ships in production",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-16",
-      "text": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+      "id": "REQ-26",
+      "text": "Replace the app’s static QR asset with the user-uploaded image `image-5.png` so the Payment Section successfully loads the QR from the existing path `/assets/generated/payment-qr.dim_512x512.png` (file location: `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-14"
         ],
         "quotes": [
-          "i want this QR"
+          "yes"
         ]
       },
       "acceptanceCriteria": [
-        "The QR shown in the payment UI matches the uploaded QR image.",
-        "The QR image is loaded from `/assets/generated/payment-qr.dim_512x512.png` and no backend image serving is introduced.",
-        "No code changes are required to reference a different QR path (only the asset file is replaced)."
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "text": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "ALSO REMOVE LOGIN ICON"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The header no longer renders the Login/Logout button and related icons (e.g., LogIn/LogOut).",
-        "The rest of the landing page layout remains intact and functional (offer details, urgency banner, form, payment flow)."
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "text": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "AFTER I PAID BUTTON IT WILL SHOW YOU WILL GET ACCESS WITHIN 10 MINS AFTER CHECKING YOUR PAYMENT DETAILS"
-        ]
-      },
-      "acceptanceCriteria": [
-        "After a successful `markAsPaid` action, the confirmation screen displays the exact sentence: “You will get access within 10 mins after checking your payment details”.",
-        "The message is user-facing and clearly visible without needing to expand/click anything.",
-        "No other user-facing text contradicts the 10-minute access expectation."
+        "`frontend/public/assets/generated/payment-qr.dim_512x512.png` exists in the repo after the change and its contents match the user-uploaded `image-5.png` (no visual transformations besides normal responsive rendering in the browser).",
+        "In the Payment Section, the QR image renders (the onError fallback does not trigger) when navigating to the payment step.",
+        "The QR image is available at runtime at the exact URL path `/assets/generated/payment-qr.dim_512x512.png` in the deployed build."
       ]
     }
   ],
   "constraints": [
-    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, `frontend/src/components/ui`.",
-    "Keep the payment QR loaded as a static frontend asset; do not add backend image hosting."
+    "Do not change any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, or anything under `frontend/src/components/ui` (compose instead of editing those).",
+    "Keep using the existing QR image URL path `/assets/generated/payment-qr.dim_512x512.png` (do not introduce a new path).",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Changing backend payment/submission logic (`markAsPaid`, renewal date computation, urgency slots).",
-    "Adding new authentication methods or third-party login providers.",
-    "Implementing real payment verification; the confirmation remains based on the existing “I Have Paid” user action."
+    "Changing backend logic or data schema for submissions/payment marking.",
+    "Changing the configured UPI deep link (it is already set to `9622655116@ybl` in `frontend/src/config/payment.ts`).",
+    "Redesigning the Payment Section UI beyond what is required to ensure the QR asset renders."
   ],
   "imageRequirements": {
     "required": [],
     "edits": [
-      "Replace the QR image content with the uploaded QR (payment-qr.dim_512x512.png > payment-qr.dim_512x512.png)"
+      "Replace the payment QR image with the uploaded PhonePe QR (image-5.png > payment-qr.dim_512x512.png)"
     ]
   },
   "userProfileUpdate": {
     "goalsToAdd": [],
     "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Use English for user-facing text"
-    ],
+    "preferencesToAdd": [],
     "preferencesToRemove": [],
     "miscToAdd": [],
     "miscToRemove": [],

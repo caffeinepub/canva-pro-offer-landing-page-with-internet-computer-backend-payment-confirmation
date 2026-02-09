@@ -1,76 +1,21 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T09:23:18.615Z",
-  "summary": "REQ-17 (remove Login/Logout from header) and REQ-18 (update confirmation message) appear implemented in the shown code diffs. REQ-16 (replace the actual QR image file at the static asset path) is not evidenced in the diff summary, so it appears missing. The diff summary also indicates several additional, unrequested frontend changes (connectivity banner, error handling, theme/config/docs) via the modified frontend-file-summaries.txt and urlParams utilities.",
+  "generatedAt": "2026-02-09T07:04:58.804Z",
+  "summary": "The diff only updates `project_state.json` and does not modify or add the required QR image asset under `frontend/public/assets/generated/`, so the requested QR replacement and production availability are not implemented.",
   "missing_requirements": [
     {
-      "id": "REQ-16",
-      "requirement": "Replace the payment QR image by updating the static asset file at `frontend/public/assets/generated/payment-qr.dim_512x512.png` while keeping the existing path `/assets/generated/payment-qr.dim_512x512.png`.",
-      "reason": "The diff summary does not show any change to `frontend/public/assets/generated/payment-qr.dim_512x512.png` (no asset file change is listed). Only code/text files are shown as modified.",
+      "id": "REQ-26",
+      "requirement": "Replace the app’s static QR asset with the user-uploaded image `image-5.png` at `frontend/public/assets/generated/payment-qr.dim_512x512.png`, ensuring it is served at runtime from `/assets/generated/payment-qr.dim_512x512.png`.",
+      "reason": "No changes were made to `frontend/public/assets/generated/payment-qr.dim_512x512.png` (or any `frontend/public` asset) in the provided diff; only `project_state.json` was modified, so the QR image cannot have been replaced or ensured to ship in production.",
       "evidence": [
-        "file-diff: Modified files list does not include `frontend/public/assets/generated/payment-qr.dim_512x512.png`"
+        "project_state.json (only modified file in diff)"
       ]
     }
   ],
-  "hallucinated_features": [
-    {
-      "description": "Added/changed admin-related URL parameter/session persistence utilities (e.g., secret token extraction and clearing from hash) not requested by the BuildRequest.",
-      "reason": "BuildRequest only asks to replace QR asset, remove Login/Logout UI, and update confirmation text; URL param persistence/cleanup is outside scope.",
-      "evidence": [
-        "frontend/src/utils/urlParams.ts",
-        "frontend-file-summaries.txt (entry for `frontend/src/utils/urlParams.ts` references secret/admin tokens)"
-      ]
-    },
-    {
-      "description": "Backend connectivity checking hook and a non-blocking warning banner UI when backend is unreachable.",
-      "reason": "Not requested in REQ-16/17/18 and not part of the stated goals.",
-      "evidence": [
-        "frontend-file-summaries.txt (entries for `frontend/src/hooks/useBackendConnectivity.ts` and `frontend/src/components/BackendConnectivityBanner.tsx`)"
-      ]
-    },
-    {
-      "description": "Enhanced LeadCaptureForm error handling with expandable technical details and extensive debugging/logging.",
-      "reason": "Not requested in REQ-16/17/18.",
-      "evidence": [
-        "frontend-file-summaries.txt (entry for `frontend/src/components/LeadCaptureForm.tsx`)"
-      ]
-    },
-    {
-      "description": "Payment configuration changes (UPI link updates and documentation/comments) beyond swapping the static QR asset.",
-      "reason": "REQ-16 explicitly says no code changes are required to reference a different QR path; updating payment configuration/link is outside the requested changes.",
-      "evidence": [
-        "frontend-file-summaries.txt (entry for `frontend/src/config/payment.ts`)"
-      ]
-    },
-    {
-      "description": "Global visual theme changes (index.css palette changes).",
-      "reason": "Not requested; only specific UI element removal and message text change were requested.",
-      "evidence": [
-        "frontend-file-summaries.txt (entry for `frontend/src/index.css`)"
-      ]
-    },
-    {
-      "description": "Large documentation update in `frontend/README.md` unrelated to the three requested UI changes.",
-      "reason": "Not requested in the BuildRequest.",
-      "evidence": [
-        "frontend-file-summaries.txt (entry for `frontend/README.md`)"
-      ]
-    },
-    {
-      "description": "New/changed actor/config/error utilities (actor creation config module, actor error normalization) beyond requested UI changes.",
-      "reason": "Not requested; BuildRequest explicitly lists backend/payment logic as non-goals and only asks for limited frontend UI/asset updates.",
-      "evidence": [
-        "frontend-file-summaries.txt (entries for `frontend/src/utils/actorError.ts`, `frontend/src/config/index.ts`, `frontend/src/hooks/useActor.ts`)"
-      ]
-    }
-  ],
-  "confidence": 0.63,
+  "hallucinated_features": [],
+  "confidence": 0.9,
   "changed_files": [
-    "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/PaymentConfirmation.tsx",
-    "frontend/src/utils/urlParams.ts",
     "project_state.json"
   ]
 }

@@ -38,6 +38,7 @@ export interface _SERVICE {
   'getRemainingUrgencySlots' : ActorMethod<[], bigint>,
   'getStaticConfigInstructions' : ActorMethod<[], string>,
   'getSubmissionById' : ActorMethod<[SubmissionId], [] | [Submission]>,
+  'helloWorld' : ActorMethod<[], string>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'markAsPaid' : ActorMethod<[SubmissionId], undefined>,
 }

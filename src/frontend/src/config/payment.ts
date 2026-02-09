@@ -16,8 +16,8 @@
 export const PAYMENT_CONFIG = {
   // UPI Payment Link - Update the 'pa' parameter with your UPI ID
   // Format: upi://pay?pa=YOUR_UPI_ID@upi&pn=PAYEE_NAME&am=AMOUNT&cu=CURRENCY
-  // Example: upi://pay?pa=merchant@paytm&pn=CanvaPro&am=299&cu=INR
-  paymentLink: 'upi://pay?pa=9876543210@paytm&pn=CanvaPro&am=299&cu=INR',
+  // Current UPI ID: 9622655116@ybl
+  paymentLink: 'upi://pay?pa=9622655116@ybl&pn=CanvaPro&am=299&cu=INR',
   
   // Display text for the payment amount
   amountText: '₹299',

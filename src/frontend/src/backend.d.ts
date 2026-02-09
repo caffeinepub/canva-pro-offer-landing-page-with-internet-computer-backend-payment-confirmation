@@ -38,6 +38,7 @@ export interface backendInterface {
     getRemainingUrgencySlots(): Promise<bigint>;
     getStaticConfigInstructions(): Promise<string>;
     getSubmissionById(submissionId: SubmissionId): Promise<Submission | null>;
+    helloWorld(): Promise<string>;
     isCallerAdmin(): Promise<boolean>;
     markAsPaid(submissionId: SubmissionId): Promise<void>;
 }

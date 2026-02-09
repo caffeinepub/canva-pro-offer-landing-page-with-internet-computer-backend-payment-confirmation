@@ -5,7 +5,7 @@
 
 export interface NormalizedError {
   userMessage: string;
-  rawError: string;
+  technicalDetails: string;
   category: 'actor-creation' | 'network-agent' | 'backend-trap' | 'unknown';
 }
 
@@ -16,13 +16,13 @@ export interface NormalizedError {
 export function normalizeActorError(error: unknown): NormalizedError {
   // Default values
   let userMessage = 'An unexpected error occurred. Please try again.';
-  let rawError = String(error);
+  let technicalDetails = String(error);
   let category: NormalizedError['category'] = 'unknown';
 
   try {
     // Handle Error objects
     if (error instanceof Error) {
-      rawError = `${error.name}: ${error.message}\n${error.stack || ''}`;
+      technicalDetails = `${error.name}: ${error.message}\n${error.stack || ''}`;
 
       // Classify based on error message patterns
       const message = error.message.toLowerCase();
@@ -57,7 +57,7 @@ export function normalizeActorError(error: unknown): NormalizedError {
     }
     // Handle string errors
     else if (typeof error === 'string') {
-      rawError = error;
+      technicalDetails = error;
       const lowerError = error.toLowerCase();
 
       if (lowerError.includes('trap') || lowerError.includes('reject')) {
@@ -71,7 +71,7 @@ export function normalizeActorError(error: unknown): NormalizedError {
     }
     // Handle objects with message property
     else if (error && typeof error === 'object' && 'message' in error) {
-      rawError = JSON.stringify(error, null, 2);
+      technicalDetails = JSON.stringify(error, null, 2);
       const message = String((error as any).message).toLowerCase();
 
       if (message.includes('trap') || message.includes('reject')) {
@@ -81,12 +81,12 @@ export function normalizeActorError(error: unknown): NormalizedError {
     }
   } catch (normalizationError) {
     console.error('Error during error normalization:', normalizationError);
-    rawError = `Original error: ${String(error)}\nNormalization error: ${String(normalizationError)}`;
+    technicalDetails = `Original error: ${String(error)}\nNormalization error: ${String(normalizationError)}`;
   }
 
   return {
     userMessage,
-    rawError,
+    technicalDetails,
     category,
   };
 }
@@ -104,7 +104,7 @@ export function logActorError(
   console.group(`🔴 Actor Error: ${context}`);
   console.error('Category:', normalized.category);
   console.error('User Message:', normalized.userMessage);
-  console.error('Raw Error:', normalized.rawError);
+  console.error('Technical Details:', normalized.technicalDetails);
   if (additionalInfo) {
     console.error('Additional Info:', additionalInfo);
   }

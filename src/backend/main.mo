@@ -145,7 +145,7 @@ actor {
     switch (submissions.get(submissionId)) {
       case (null) { null };
       case (?submission) {
-        // Authorization: Only the owner or an admin can view the submission
+        // Authorization: Only the owner or an admin can view this submission
         if (caller != submission.owner and not AccessControl.isAdmin(accessControlState, caller)) {
           Runtime.trap("Unauthorized: Only the submission owner or admin can view this submission");
         };
@@ -161,5 +161,9 @@ actor {
     };
 
     "CONFIGURATION INSTRUCTIONS:\n" # "1. Store the payment link as a constant in the frontend UI code.\n" # "2. Store the payment QR image as a static asset on the frontend.\n" # "3. Deploy the Motoko backend with dfx deploy.";
+  };
+
+  public query ({ caller }) func helloWorld() : async Text {
+    "Hello World!";
   };
 };

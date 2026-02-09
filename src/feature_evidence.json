@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-payment-qr-image-displayed-in-the-payment-section-with-the-user-provided-uploaded-qr-image-keeping-the-app-s-existing-static-asset-path-assets-generated-payment-qr-dim-512x512-png-i-e-update-the-file-at-frontend-public-assets-generated-payment-qr-dim-512x512-png",
-      "featureTitle": "Replace the payment QR image displayed in the Payment Section with the user-provided uploaded QR image, keeping the app’s existing static asset path `/assets/generated/payment-qr.dim_512x512.png` (i.e., update the file at `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
+      "featureId": "feature-replace-the-app-s-static-qr-asset-with-the-user-uploaded-image-image-5-png-so-the-payment-section-successfully-loads-the-qr-from-the-existing-path-assets-generated-payment-qr-dim-512x512-png-file-location-frontend-public-assets-generated-payment-qr-dim-512x512-png",
+      "featureTitle": "Replace the app’s static QR asset with the user-uploaded image `image-5.png` so the Payment Section successfully loads the QR from the existing path `/assets/generated/payment-qr.dim_512x512.png` (file location: `frontend/public/assets/generated/payment-qr.dim_512x512.png`).",
       "files": [],
       "components": [
         "authorization@4.0.0",
@@ -14,45 +14,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-16"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-remove-the-login-logout-icon-button-from-the-landing-page-header-ui-currently-rendered-in-frontend-src-app-tsx-so-it-is-not-visible-to-users",
-      "featureTitle": "Remove the Login/Logout icon/button from the landing page header UI (currently rendered in `frontend/src/App.tsx`) so it is not visible to users.",
-      "files": [
-        "frontend/src/App.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-17"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-after-the-user-clicks-the-i-have-paid-button-and-the-app-transitions-to-the-confirmation-screen-display-this-exact-english-message-prominently-you-will-get-access-within-10-mins-after-checking-your-payment-details-update-the-existing-confirmation-copy-in-frontend-src-components-paymentconfirmation-tsx-accordingly",
-      "featureTitle": "After the user clicks the “I Have Paid” button and the app transitions to the confirmation screen, display this exact English message prominently: “You will get access within 10 mins after checking your payment details”. Update the existing confirmation copy in `frontend/src/components/PaymentConfirmation.tsx` accordingly.",
-      "files": [
-        "frontend/src/components/PaymentConfirmation.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-18"
+        "REQ-26"
       ],
       "confidence": "high"
     }
